@@ -21,6 +21,20 @@ ifdef DEBUG
 $(info Target object files:)
 $(foreach x,$(OBJS_$(d)),$(info -- Target file: $(x)))
 endif
+
+# Get list of object files to construct by looking for files matching src/*.cc
+# "wildcard" gets the files in src, "notdir" removes the directory part, "basename"
+# removes the extension, "addprefix" adds the full path to the obj directory and finally
+# "addsuffix" adds the .o extension
+DOBJS_$(d) := $(addsuffix Dict.o, $(addprefix $(d)/dict/,$(basename $(notdir $(MAKE_DICTS)))))
+ifdef DEBUG
+$(info Target dictionary object files:)
+$(foreach x,$(DOBJS_$(d)),$(info -- Target file: $(x)))
+endif
+
+DHEADERS_$(d) := $(addprefix $(d)/,$(MAKE_DICTS))
+
+
 # Get list of exectutables to compile by looking for files matching test/*.cpp
 # "wildcard" gets the files in test, "notdir" removes the directory part, "basename"
 # removes the extension and "addprefix" adds the full path to the bin directory
@@ -65,6 +79,18 @@ else
  endif
 endif
 
+# Do the same for a ROOT dictionary shared library
+ifneq ($(DOBJS_$(d)),)
+ DLIB_$(d) := $(addsuffix Dict.so,$(addprefix $(d)/lib/libIC,$(LIBNAME_$(d))))
+ ifdef DEBUG
+  $(info -- Dictionary library: $(DLIB_$(d)))
+ endif
+else
+ ifdef DEBUG
+  $(info -- No source files, dictionary library will not be generated!)
+ endif
+endif
+
 # Only if the directory we're scanning is the directory the user is running from
 # we define shortcut targets for compiling executables. This means the user can
 # do 'make bin/MyProg' instead of having to do 'make /full/path/to/bin/MyProg'
@@ -98,6 +124,7 @@ endif
 # If they exist (-include instead of include), load automatic rules in the
 # .d files
 -include $(OBJS_$(d):.o=.d)
+-include $(DOBJS_$(d):.o=.d)
 -include $(EXE_OBJS_$(d):.o=.d)
 
 # Rule for generating object files from source files
@@ -107,6 +134,18 @@ $(d)/obj/%.o: $(d)/src/%.cc
 	@echo -e "$(COLOR_CY)Generating dependency file $(subst $(TOP)/,,$(@:.o=.d))$(NOCOLOR)"
 	@$(CXX) $(CXXFLAGS) -MM -MP -MT "$@" $< -o $(@:.o=.d)
 
+# Rule for generating dictionary object
+$(d)/obj/rootcint_dict.o: $(d)/obj/rootcint_dict.cc
+	@echo -e "$(COLOR_BL)Compiling dictionary object file $(subst $(TOP)/,,$@)$(NOCOLOR)"
+	$(DOECHO)$(CXX) $(CXXFLAGS) -fPIC -c $< -o $@
+	@echo -e "$(COLOR_CY)Generating dependency file $(subst $(TOP)/,,$(@:.o=.d))$(NOCOLOR)"
+	@$(CXX) $(CXXFLAGS) -MM -MP -MT "$@" $< -o $(@:.o=.d)
+
+$(d)/obj/rootcint_dict.cc: $(DHEADERS_$(d)) $(d)/interface/LinkDef.h
+	@echo -e "$(COLOR_BL)Generating ROOT dictionary $(subst $(TOP)/,,$@)$(NOCOLOR)"
+	$(DOECHO)rootcint -v4 -f $@ -c -p -I$(CMSSW_BASE)/src $^
+
+
 # Rule for generating object files for executables from source files
 $(d)/bin/%.o: $(d)/test/%.cpp
 	@echo -e "$(COLOR_BL)Compiling object file $(subst $(TOP)/,,$@)$(NOCOLOR)"
@@ -115,9 +154,14 @@ $(d)/bin/%.o: $(d)/test/%.cpp
 	$(DOECHO)$(CXX) $(CXXFLAGS) -MM -MP -MT "$@" $< -o $(@:.o=.d)
 
 # Rule for generating shared library
-$(LIB_$(d)) : $(OBJS_$(d)) $(LIB_DEPS_$(d))
+$(LIB_$(d)) : $(OBJS_$(d)) $(d)/obj/rootcint_dict.o $(LIB_DEPS_$(d)) 
 	@echo -e "$(COLOR_PU)Creating shared library $(subst $(TOP)/,,$@)$(NOCOLOR)"
 	$(DOECHO)$(LD) $(LDFLAGS) -o $@ $^ $(LIBS) $(LIB_DEP_$(@))
+
+# Rule for generating shared dictionary library
+# $(DLIB_$(d)) : $(DOBJS_$(d)) $(LIB_$(d))
+# 	@echo -e "$(COLOR_PU)Creating shared dictionary library $(subst $(TOP)/,,$@)$(NOCOLOR)"
+# 	$(DOECHO)$(LD) $(LDFLAGS) -o $@ $^ $(LIBS) $(LIB_DEP_$(@))
 
 # Shortcut rules for building an executable, if this is the run directory
 # NB: don't remove the echo statement here or make will optimise-out this

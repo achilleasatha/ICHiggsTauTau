@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include <iostream>
-#include "UserCode/ICHiggsTauTau/interface/city.h"
+// #include "UserCode/ICHiggsTauTau/interface/city.h"
 
 
 namespace ic {
@@ -122,18 +122,10 @@ namespace ic {
     inline TBMap const& filters() const { return filters_; }
     inline void set_filters(TBMap const& filters) { filters_ = filters; }
 
-    inline void set_filter_result(std::string const& label, bool const& result) {
-      filters_[CityHash64(label)] = result;
-    }
-    inline bool filter_result(std::string const& label) {
-      TBMap::const_iterator it = filters_.find(CityHash64(label));
-      if (it != filters_.end()) {
-        return it->second;
-      } else {
-        std::cerr << "Filter \"" << label << "\" not found!" << std::endl;
-        return true;
-      }    
-    }
+    void set_filter_result(std::string const& label, bool const& result);
+
+    bool filter_result(std::string const& label);
+
     inline bool total_filter_result() const {
       TBMap::const_iterator it;
       bool result = true;

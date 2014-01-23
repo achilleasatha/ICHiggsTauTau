@@ -3,4 +3,5 @@ define HEADER
 SUBDIRS :=
 LIB_DEPS :=
 LIB_EXTRA :=
+MAKE_DICTS :=
 endef

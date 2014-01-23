@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include "UserCode/ICHiggsTauTau/interface/Candidate.hh"
+#include "Rtypes.h"
 
 
 namespace ic {
@@ -101,6 +102,8 @@ namespace ic {
       // std::vector<std::size_t> hlt_match_paths_;
       // std::vector<std::size_t> hlt_match_filters_;
 
+    public:
+      ClassDef(Tau, 1);
 
   };
 

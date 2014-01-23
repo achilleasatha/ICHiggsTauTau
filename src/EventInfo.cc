@@ -1,4 +1,5 @@
 #include "UserCode/ICHiggsTauTau/interface/EventInfo.hh"
+#include "UserCode/ICHiggsTauTau/interface/city.h"
 
 namespace ic {
   //Constructors/Destructors
@@ -11,6 +12,20 @@ namespace ic {
   }
 
   EventInfo::~EventInfo() {
+  }
+
+  void EventInfo::set_filter_result(std::string const& label, bool const& result) {
+    filters_[CityHash64(label)] = result;
+  }
+  
+  bool EventInfo::filter_result(std::string const& label) {
+    TBMap::const_iterator it = filters_.find(CityHash64(label));
+    if (it != filters_.end()) {
+      return it->second;
+    } else {
+      std::cerr << "Filter \"" << label << "\" not found!" << std::endl;
+      return true;
+    }    
   }
 
   void EventInfo::Print() const {

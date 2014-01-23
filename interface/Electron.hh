@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include "UserCode/ICHiggsTauTau/interface/Candidate.hh"
+#include "Rtypes.h"
 
 
 namespace ic {
@@ -229,6 +230,8 @@ namespace ic {
       std::vector<std::size_t> gen_particles_;
 
       UFmap elec_idiso_;
+    public:
+      ClassDef(Electron, 1);
 
   };
 
