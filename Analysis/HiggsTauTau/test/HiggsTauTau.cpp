@@ -42,6 +42,7 @@
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/interface/TauEfficiency.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/interface/EmbeddingKineReweightProducer.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/interface/BTagCheck.h"
+#include "UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/interface/PUJets.h"
 
 using boost::lexical_cast;
 using boost::bind;
@@ -798,7 +799,7 @@ int main(int argc, char* argv[]){
     .set_input_label_second("taus")
     .set_candidate_name_first("lepton1")
     .set_candidate_name_second("lepton2")
-    .set_output_label("emtauCandidates"); 
+    .set_output_label("emtauCandidates");
 
   CompositeProducer<Muon, Tau> tauMuPairProducer = CompositeProducer<Muon, Tau>
     ("TauMuPairProducer")
@@ -806,7 +807,7 @@ int main(int argc, char* argv[]){
     .set_input_label_second("taus")
     .set_candidate_name_first("lepton1")
     .set_candidate_name_second("lepton2")
-    .set_output_label("emtauCandidates");   
+    .set_output_label("emtauCandidates");
 
   CompositeProducer<Electron, Muon> elMuPairProducer = CompositeProducer<Electron, Muon>
     ("ElecMuPairProducer")
@@ -814,13 +815,13 @@ int main(int argc, char* argv[]){
     .set_input_label_second("selMuons")
     .set_candidate_name_first("lepton1")
     .set_candidate_name_second("lepton2")
-    .set_output_label("emtauCandidates");                                                        
+    .set_output_label("emtauCandidates");
 
   SimpleFilter<CompositeCandidate> pairFilter = SimpleFilter<CompositeCandidate>("PairFilter")
     .set_input_label("emtauCandidates")
     .set_predicate( (bind(&CompositeCandidate::DeltaR, _1, "lepton1","lepton2") > 0.5))
     .set_min(1)
-    .set_max(999);    
+    .set_max(999);
   if (channel == channel::em) pairFilter
     .set_predicate( (bind(PairOneWithPt, _1, 20.0)) && (bind(&CompositeCandidate::DeltaR, _1, "lepton1","lepton2") > 0.3));
   if (channel == channel::mtmet) pairFilter
@@ -830,7 +831,7 @@ int main(int argc, char* argv[]){
 
   // ------------------------------------------------------------------------------------
   // Jet Modules
-  // ------------------------------------------------------------------------------------  
+  // ------------------------------------------------------------------------------------
   OverlapFilter<PFJet, CompositeCandidate> jetLeptonOverlapFilter = OverlapFilter<PFJet, CompositeCandidate>
     ("JetLeptonOverlapFilter")
     .set_input_label("pfJetsPFlow")
@@ -1009,9 +1010,9 @@ int main(int argc, char* argv[]){
    httPrint.PrintEvent(ch);
   }
   httPrint.set_skip_events(false);
-  if ( (channel == channel::etmet || 
+  if ( (channel == channel::etmet ||
         channel == channel::mtmet)
-        && !is_data )             analysis.AddModule(&httL1MetCorrector); 
+        && !is_data )             analysis.AddModule(&httL1MetCorrector);
   if (is_data && !do_skim)        analysis.AddModule(&lumiMask);
   if (!is_data && !do_skim)       analysis.AddModule(&pileupWeight);
   if (vh_filter_mode > 0)         analysis.AddModule(&vhFilter);
@@ -1019,7 +1020,7 @@ int main(int argc, char* argv[]){
   if (!is_data && do_mass_filter) analysis.AddModule(&mssmMassFilter);
   if (tau_scale_mode > 0 && channel != channel::em && !moriond_tau_scale && !do_skim)
                                   analysis.AddModule(&tauEnergyShifter);
-  if (tau_scale_mode > 0 && channel == channel::em)         
+  if (tau_scale_mode > 0 && channel == channel::em)
                                   analysis.AddModule(&electronEnergyShifter);
   if (moriond_tau_scale && channel != channel::em && (!is_data || is_embedded) && !do_skim)          
                                   analysis.AddModule(&httEnergyScale);
@@ -1029,7 +1030,7 @@ int main(int argc, char* argv[]){
   if (channel == channel::et || channel == channel::etmet) {
                                   analysis.AddModule(&selElectronCopyCollection);
                                   analysis.AddModule(&selElectronFilter);
-    if (!do_skim) {                              
+    if (!do_skim) {
                                   analysis.AddModule(&vetoElectronCopyCollection);
                                   analysis.AddModule(&vetoElectronFilter);
                                   analysis.AddModule(&vetoElectronPairProducer);
@@ -1055,7 +1056,7 @@ int main(int argc, char* argv[]){
   if (channel == channel::mt || channel == channel::mtmet) {
                                   analysis.AddModule(&selMuonCopyCollection);
                                   analysis.AddModule(&selMuonFilter);
-    if (!do_skim) {                              
+    if (!do_skim) {
                                   analysis.AddModule(&vetoMuonCopyCollection);
                                   analysis.AddModule(&vetoMuonFilter);
                                   analysis.AddModule(&vetoMuonPairProducer);
@@ -1073,7 +1074,7 @@ int main(int argc, char* argv[]){
                                   analysis.AddModule(&tauIsoFilter);
                                   analysis.AddModule(&tauElRejectFilter);
                                   analysis.AddModule(&tauMuRejectFilter);
-    
+
                                   analysis.AddModule(&tauMuPairProducer);
                                   analysis.AddModule(&pairFilter);
   }
@@ -1089,10 +1090,10 @@ int main(int argc, char* argv[]){
     }
                                   analysis.AddModule(&selMuonCopyCollection);
                                   analysis.AddModule(&selMuonFilter);
-  
+
                                   analysis.AddModule(&elMuPairProducer);
                                   analysis.AddModule(&pairFilter);
-    if (!do_skim) {                              
+    if (!do_skim) {
                                   analysis.AddModule(&extraElectronVeto);
                                   analysis.AddModule(&extraMuonVeto);
     }
@@ -1109,7 +1110,7 @@ int main(int argc, char* argv[]){
                                   analysis.AddModule(&httPairSelector);
     if (jes_mode > 0 && !is_data) analysis.AddModule(&jetEnergyUncertainty);
     //                            analysis.AddModule(&jetEnergyCorrections);
-                                  analysis.AddModule(&jetIDFilter);
+                                  // analysis.AddModule(&jetIDFilter);
                                   analysis.AddModule(&filteredJetCopyCollection);
                                   analysis.AddModule(&jetLeptonOverlapFilter);
                                   analysis.AddModule(&httRecoilCorrector);
@@ -1125,8 +1126,11 @@ int main(int argc, char* argv[]){
       && !do_skim  && !make_sync_ntuple        // svfit jobs
       && new_svfit_mode != 1) {
                                   analysis.AddModule(&httL1MetCut);
-    }  
+    }
                                   analysis.AddModule(&httWeights);
+   PUJets pujets("PUJets");
+   pujets.set_fs(fs);
+                                 analysis.AddModule(&pujets);
    if (is_embedded && era == era::data_2012_rereco) {
                                   analysis.AddModule(&rechitWeights);
    }

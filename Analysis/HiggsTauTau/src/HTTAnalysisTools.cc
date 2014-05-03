@@ -114,7 +114,7 @@ namespace ic {
         alias_map_["new_1jet_high_lowhiggs"]     += " && met>30.";
         alias_map_["new_1jet_high_highhiggs"]    += " && met>30.";
         alias_map_["new_1jet_medium"]            += " && met>30.";
-      } 
+      }
       alias_map_["new_0jet_high"]         = "(n_jets==0 && pt_2>45. && n_bjets==0)";
       alias_map_["new_0jet_medium"]       = "(n_jets==0 && pt_2>30. && pt_2<=45. && n_bjets==0)";
       alias_map_["new_0jet_low"]          = "(n_jets==0 && pt_2<=30. && n_bjets==0)";

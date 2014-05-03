@@ -863,3 +863,13 @@ htt_em.inputs-sm-8TeV.root
  --title_left="muTau_0jet_high, 8 TeV" \
  --outname="0jet_shapes.pdf"
 
+./bin/PlotCompare  \
+ -p "ZTT:Z#rightarrow#tau#tau:cmb/common/htt_mt.input_8TeV.root:/muTau_0jet_medium:ZTT:-1:0:1" \
+ -p "ESHI:#tau_{h} Energy Scale +3%:cmb/common/htt_mt.input_8TeV.root:/muTau_0jet_medium:ZTT_CMS_scale_t_mutau_8TeVUp:-1:0:4" \
+ -p "ESLO:#tau_{h} Energy Scale -3%:cmb/common/htt_mt.input_8TeV.root:/muTau_0jet_medium:ZTT_CMS_scale_t_mutau_8TeVDown:-1:0:8" \
+ --x_axis_title="M_{#tau#tau} [GeV]" --norm_mode=3  --big_label=" " \
+ --custom_x_axis_range=true --x_axis_min=0 --x_axis_max=200 \
+ --log_y=false --rebin=1 --norm_bins=true \
+ --title_left="muTau_0jet_high, 8 TeV" \
+ --outname="tau_es_comp.pdf"
+
