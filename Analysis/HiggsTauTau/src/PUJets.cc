@@ -60,69 +60,82 @@ namespace ic {
       double eta = fabs(jets[i]->eta());
       double mva = jets[i]->pu_id_mva_value();
       if (MinDRToCollection(jets[i], genjets, 0.5)) is_pu[i] = true;
-      frac_pu_before_den_->Fill(fabs(jets[i]->eta()), wt);
-      if (PileupJetID(jets[i], 2)) frac_pu_after_den_->Fill(fabs(jets[i]->eta()), wt);
+      frac_pu_before_den_->Fill(eta, wt);
+      if (PileupJetID(jets[i], 2)) frac_pu_after_den_->Fill(eta , wt);
       if (is_pu[i]) {
+        frac_pu_before_num_->Fill(eta, wt);
+        if (PileupJetID(jets[i], 2)) frac_pu_after_num_->Fill(eta, wt);
+      }
+      if (is_pu[i] && eta < 2.5) {
         fake_jet_beta_->Fill(jets[i]->beta(), wt);
-        frac_pu_before_num_->Fill(fabs(jets[i]->eta()), wt);
-        if (PileupJetID(jets[i], 2)) frac_pu_after_num_->Fill(fabs(jets[i]->eta()), wt);
+      }
+      if (!is_pu[i] && eta < 2.5) {
+        real_jet_beta_->Fill(jets[i]->beta(), wt);
       }
       if (eta < 2.5 && is_pu[i]) {
         for (int i = 1; i <= mva1_pu_num_->GetNbinsX(); ++i) {
-          if (mva > mva1_pu_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva1_pu_num_->Fill(mva1_pu_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva1_pu_den_->Fill(mva1_pu_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva1_pu_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva1_pu_num_->Fill(mva1_pu_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
       if (eta < 2.5 && !is_pu[i]) {
         for (int i = 1; i <= mva1_re_num_->GetNbinsX(); ++i) {
-          if (mva > mva1_re_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva1_re_num_->Fill(mva1_re_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva1_re_den_->Fill(mva1_re_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva1_re_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva1_re_num_->Fill(mva1_re_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
 
       if (eta >= 2.5 && eta < 2.75 && is_pu[i]) {
         for (int i = 1; i <= mva2_pu_num_->GetNbinsX(); ++i) {
-          if (mva > mva2_pu_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva2_pu_num_->Fill(mva2_pu_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva2_pu_den_->Fill(mva2_pu_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva2_pu_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva2_pu_num_->Fill(mva2_pu_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
       if (eta >= 2.5 && eta < 2.75 && !is_pu[i]) {
         for (int i = 1; i <= mva2_re_num_->GetNbinsX(); ++i) {
-          if (mva > mva2_re_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva2_re_num_->Fill(mva2_re_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva2_re_den_->Fill(mva2_re_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva2_re_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva2_re_num_->Fill(mva2_re_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
 
       if (eta >= 2.75 && eta < 3.00 && is_pu[i]) {
         for (int i = 1; i <= mva3_pu_num_->GetNbinsX(); ++i) {
-          if (mva > mva3_pu_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva3_pu_num_->Fill(mva3_pu_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva3_pu_den_->Fill(mva3_pu_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva3_pu_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva3_pu_num_->Fill(mva3_pu_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
       if (eta >= 2.75 && eta < 3.00 && !is_pu[i]) {
         for (int i = 1; i <= mva3_re_num_->GetNbinsX(); ++i) {
-          if (mva > mva3_re_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva3_re_num_->Fill(mva3_re_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva3_re_den_->Fill(mva3_re_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva3_re_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva3_re_num_->Fill(mva3_re_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
 
       if (eta >= 3.00 && eta < 4.79 && is_pu[i]) {
         for (int i = 1; i <= mva4_pu_num_->GetNbinsX(); ++i) {
-          if (mva > mva4_pu_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva4_pu_num_->Fill(mva4_pu_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva4_pu_den_->Fill(mva4_pu_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva4_pu_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva4_pu_num_->Fill(mva4_pu_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }
       if (eta >= 3.00 && eta < 4.79 && !is_pu[i]) {
         for (int i = 1; i <= mva4_re_num_->GetNbinsX(); ++i) {
-          if (mva > mva4_re_num_->GetYaxis()->GetBinLowEdge(i)) {
-            mva4_re_num_->Fill(mva4_re_num_->GetYaxis()->GetBinCenter(i), wt);
+          mva4_re_den_->Fill(mva4_re_den_->GetXaxis()->GetBinCenter(i), wt);
+          if (mva > mva4_re_num_->GetXaxis()->GetBinLowEdge(i)) {
+            mva4_re_num_->Fill(mva4_re_num_->GetXaxis()->GetBinCenter(i), wt);
           }
         }
       }

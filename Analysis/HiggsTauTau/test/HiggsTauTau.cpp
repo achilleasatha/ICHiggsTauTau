@@ -983,6 +983,9 @@ int main(int argc, char* argv[]){
   if (svfit_override != "") {
     svfit.set_outname(svfit_override);
   }
+   
+  PUJets pujets("PUJets");
+  pujets.set_fs(fs);
 
   SVFitTest svfitTest("SVFitTest");
   svfitTest
@@ -1128,12 +1131,10 @@ int main(int argc, char* argv[]){
                                   analysis.AddModule(&httL1MetCut);
     }
                                   analysis.AddModule(&httWeights);
-   PUJets pujets("PUJets");
-   pujets.set_fs(fs);
-                                 analysis.AddModule(&pujets);
-   if (is_embedded && era == era::data_2012_rereco) {
+                                  analysis.AddModule(&pujets);
+    if (is_embedded && era == era::data_2012_rereco) {
                                   analysis.AddModule(&rechitWeights);
-   }
+    }
     if (strategy == strategy::paper2013 && channel == channel::em) {
                                   analysis.AddModule(&emuMVA);
     }
