@@ -2,32 +2,27 @@
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/LightTreeAnalyser.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/LightTreeModule.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/LightTreeFiles.h"
-<<<<<<< HEAD
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/DataWEst.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/DataQCDEst.h"
-=======
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/DataNormShape.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/DataZNormShape.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/DataShape.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/DataZEst.h"
->>>>>>> 80cf1d29fd51d2d7b2beec8256ad805433385814
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/NormPlots.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/APlot.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/SimplePlots.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/MVATrain.h"
-<<<<<<< HEAD
 #include "boost/lexical_cast.hpp"
 #include "boost/program_options.hpp"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/ShapeSignal.h"
 #include <boost/algorithm/string.hpp>
-=======
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/AddFriends.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/Plotter.h"
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsNuNu/LightTreeAna/interface/HistPlotter.h"
 #include "boost/lexical_cast.hpp"
 #include "boost/program_options.hpp"
 #include "TColor.h"
->>>>>>> 80cf1d29fd51d2d7b2beec8256ad805433385814
+
 
 namespace po=boost::program_options;
 using namespace ic;
@@ -97,14 +92,14 @@ int main(int argc, char* argv[]){
   analysis->SetInputParams(inputparams);
 
   //Set selection step common to all categories
-<<<<<<< HEAD
+
   analysis->set_baseselection("passtrigger==1&& jet1_pt>"+boost::lexical_cast<std::string>(jet1ptcut)+"&& jet2_pt>"+boost::lexical_cast<std::string>(jet2ptcut)+" && dijet_M >"+boost::lexical_cast<std::string>(mjjcut)+"&& jet1_eta*jet2_eta<="+boost::lexical_cast<std::string>(etaprodcut)+"&& dijet_dphi<"+boost::lexical_cast<std::string>(dphicut)+"&& dijet_deta >"+boost::lexical_cast<std::string>(detacut));
 
-=======
+
   //analysis->set_baseselection("passtrigger==1&&jet1_eta<4.7&&jet2_eta<4.7&& jet1_pt>"+boost::lexical_cast<std::string>(jet1ptcut)+"&& jet2_pt>"+boost::lexical_cast<std::string>(jet2ptcut)+" && dijet_M >"+boost::lexical_cast<std::string>(mjjcut)+"&& jet1_eta*jet2_eta<"+boost::lexical_cast<std::string>(etaprodcut)+"&& dijet_dphi<"+boost::lexical_cast<std::string>(dphicut)+"&& dijet_deta >"+boost::lexical_cast<std::string>(detacut));
   //analysis->set_baseselection("jet1_pt>50&&jet2_pt>50&&dijet_deta>3.6&&metnomu_significance>3&&jetmetnomu_mindphi>1.5");
   analysis->set_baseselection("jet1_pt>50&&jet2_pt>50&&dijet_deta>3.6&&metnomu_significance>3&&jetmetnomu_mindphi>1.5");
->>>>>>> 80cf1d29fd51d2d7b2beec8256ad805433385814
+
   /*##########################################
   #                                          #
   #            DEFINE MODULES                #
@@ -271,7 +266,7 @@ int main(int argc, char* argv[]){
     .set_ngenmassfilteredqcd(20334900);
     
     
->>>>>>> 80cf1d29fd51d2d7b2beec8256ad805433385814
+
 
 
   //NORMALISED PLOTS FOR REFEREE
@@ -379,7 +374,7 @@ tomuons==0&&dijet_M>150&&met>130")
     .set_sigcat("")
     .set_bkgcat("");
 
-<<<<<<< HEAD
+
   //ShapeSignal_munu
   ShapeSignal shapesignal_munu("shapesignal_munu");
   shapesignal_munu.set_sigmcset("WJets_munu")
@@ -398,7 +393,7 @@ tomuons==0&&dijet_M>150&&met>130")
     .set_basesel(analysis->baseselection())
     .set_sigcat("nvetoelectrons==0 && nvetomuons==0&& met>"+boost::lexical_cast<std::string>(metcut)+" && n_jets_cjv_30<"+boost::lexical_cast<std::string>(cjvcut))
     .set_contcat("nselelectrons==1 && nvetoelectrons ==1 && nvetomuons==0&& met>"+boost::lexical_cast<std::string>(metcut)+" && n_jets_cjv_30<"+boost::lexical_cast<std::string>(cjvcut));
-=======
+
   //PLOTTER
 //   std::vector<std::vector<std::string> > plottersets;
 //   std::vector<std::string> sets1;
@@ -512,31 +507,27 @@ tomuons==0&&dijet_M>150&&met>130")
     .set_shapes(shapevec);
   
   
->>>>>>> 80cf1d29fd51d2d7b2beec8256ad805433385814
+
 
   /*##########################################
   #                                          #
   #   SET UP ANALYSIS SEQUENCE AND RUN       #
   #                                          #
   ##########################################*/
-<<<<<<< HEAD
-=======
   
   //analysis->AddModule(&addfriends);
   //analysis->AddModule(&mvatrainer);
   //analysis->AddModule(&normplots);
-  analysis->AddModule(&wmunu);
-  analysis->AddModule(&wenu);
-  analysis->AddModule(&wtaunu);  
-  analysis->AddModule(&QCD);
-  analysis->AddModule(&zmumu);
-  analysis->AddModule(&vv);
-  analysis->AddModule(&top);
-  analysis->AddModule(&data);
-  analysis->AddModule(&signal);
-  analysis->AddModule(&plotter);
->>>>>>> 80cf1d29fd51d2d7b2beec8256ad805433385814
-
+//   analysis->AddModule(&wmunu);
+//   analysis->AddModule(&wenu);
+//   analysis->AddModule(&wtaunu);  
+//   analysis->AddModule(&QCD);
+//   analysis->AddModule(&zmumu);
+//   analysis->AddModule(&vv);
+//   analysis->AddModule(&top);
+//   analysis->AddModule(&data);
+//   analysis->AddModule(&signal);
+//   analysis->AddModule(&plotter);
   //   analysis->AddModule(&mvatrainer);
   //   analysis->AddModule(&normplots);
   //   analysis->AddModule(&wmunu);
