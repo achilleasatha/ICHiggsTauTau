@@ -133,7 +133,7 @@ int main(int argc, char* argv[]){
     .set_sets(setswithfriends);
 
   std::vector<std::string> shape;
-  shape.push_back("BDT(12,-1.,0.2)");
+  //shape.push_back("BDT(12,-1.,0.2)");
   shape.push_back("jet2_pt(27,30.,300.)");
   shape.push_back("jet1_pt(27,30.,300.)");
   shape.push_back("metnomuons(30,50.,200.)");
@@ -522,7 +522,7 @@ tomuons==0&&dijet_M>150&&met>130")
 <<<<<<< HEAD
 =======
   
-  analysis->AddModule(&addfriends);
+  //analysis->AddModule(&addfriends);
   //analysis->AddModule(&mvatrainer);
   //analysis->AddModule(&normplots);
   analysis->AddModule(&wmunu);
